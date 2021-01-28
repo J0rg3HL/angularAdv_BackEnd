@@ -13,17 +13,13 @@ app.use(cors());
 // conexion a base de datos
 dbConnection();
 
+// lectura  y parseo del body en peticiones
+app.use(express.json());
 
-app.get('/', (req, resp) => {
-
-    resp.json({
-        ok: true,
-        message: 'Hola mundo, todo salio  bien'
-    });
-
-
-});
-
+// CRUD usuarios
+app.use('/api/usuarios', require('./routes/usuarios.routes'));
+// login
+app.use('/api/login', require('./routes/auth.routes'));
 
 
 app.listen(process.env.PORT, () => {
