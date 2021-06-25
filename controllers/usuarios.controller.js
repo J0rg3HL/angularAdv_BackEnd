@@ -9,7 +9,14 @@ const getUsuarios = async(req, resp) => {
 
     console.log('uid  desde getusuarios:', req.uid);
 
-    const usuarios = await Usuario.find();
+
+    const desde = Number(req.query.desde) || 0;
+
+    console.log('paginacion:', desde);
+
+    const usuarios = await Usuario.find()
+        .skip(desde)
+        .limit(3);
 
     resp.json({
         ok: true,

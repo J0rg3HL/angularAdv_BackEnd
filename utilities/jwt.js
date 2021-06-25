@@ -18,7 +18,7 @@
           // DURACION DEL TOKEN
           // CALL BACK QUE  RETORNA  SI  HUBO UN ERROR
           myJWT.sign(payload,
-              process.env.JWT_SECRET_KEY, { expiresIn: '3h' },
+              process.env.JWT_SECRET_KEY, { expiresIn: '24h' },
               (error, token) => {
 
                   if (error) {
