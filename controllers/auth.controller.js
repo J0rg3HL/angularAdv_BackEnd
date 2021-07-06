@@ -121,4 +121,21 @@ const googleSingIn = async(req, resp = response) => {
     }
 }
 
-module.exports = { login, googleSingIn };
+
+
+// esto es para  poder  renovar el JWT
+const renewToken = async(req, res = response) => {
+
+    console.log('si estamos entrando a  renewToken');
+    const uid = req.uid;
+    const token = await generaJwt(uid);
+
+    res.json({
+        ok: true,
+        token,
+        uid
+    });
+
+}
+
+module.exports = { login, googleSingIn, renewToken };

@@ -21,9 +21,14 @@ route.post('/', [
     ],
     crearHospitales);
 
-route.put('/:id', updateHospitales);
 
-route.delete('/:id', borrarHospitales);
+
+route.put('/:id', [validaJWT,
+    check('nombre', 'el nombre  del  hospital es necesario, burro').notEmpty(),
+    validaCampos
+], updateHospitales);
+
+route.delete('/:id', [validaJWT], borrarHospitales);
 
 
 

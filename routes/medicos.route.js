@@ -19,9 +19,12 @@ route.post('/', [
     validaCampos
 ], crearMedicos);
 
-route.put('/:id', updateMedicos);
+route.put('/:id', [validaJWT,
+    check('nombre', 'el  nombre es mandatorio enviarlo').notEmpty(),
+    check('hospital', 'el  ID del hospital es invalido ').isMongoId(),
+], updateMedicos);
 
-route.delete('/:id', borrarMedicos);
+route.delete('/:id', validaJWT, borrarMedicos);
 
 
 

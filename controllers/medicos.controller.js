@@ -70,26 +70,79 @@ const crearMedicos = async(req, resp = response) => {
 
 
 
-const updateMedicos = (req, resp = response) => {
+const updateMedicos = async(req, resp = response) => {
 
-    // respuesta(resp, 200);
+    // respuesta(resp, 200);  
 
-    return resp.status(200).json({
-        ok: true,
-        msg: 'este  es un mensaje de pruebade updateMEdico'
-    });
+    try {
+
+        const id = req.params.id;
+        const datos = {...req.body };
+
+        const medico = await Medico.findById(id)
+            .populate('hospital')
+            .populate('usuario');
+
+
+        medico.nombre = datos.nombre;
+
+        medico.save();
+
+
+        return resp.status(200).json({
+            ok: true,
+            msg: 'este  es un mensaje de pruebade updateMEdico'
+        });
+
+
+
+    } catch (error) {
+
+        console.log('=========' + error);
+
+        return resp.status(500).json({
+            ok: true,
+            msg: 'hubo pedo al intentar actualizar el hospital, ponte  chingon'
+        });
+
+    }
 
 };
 
 
-const borrarMedicos = (req, resp = response) => {
+const borrarMedicos = async(req, resp = response) => {
 
-    // respuesta(resp, 200);
+    // respuesta(resp, 200);  
 
-    return resp.status(200).json({
-        ok: true,
-        msg: 'este  es un mensaje de prueba desde delete Medico'
-    });
+    try {
+
+        const id = req.params.id;
+        const medicos = await Medico.findByIdAndDelete(id, function(err, docs) {
+            if (err) {
+                console.log(err);
+                return resp.status(200).json({
+                    ok: false,
+                    msg: 'NO SE ACTUALIZO ELMEDICO'
+                });
+            } else {
+                console.log("Deleted : ", docs);
+                return resp.status(200).json({
+                    ok: true,
+                    msg: 'TODOO OK, SE ACTUALIZO ELMEDICO'
+                });
+            }
+        });
+
+
+    } catch (error) {
+
+        return resp.status(500).json({
+            ok: true,
+            msg: 'hubo pedo al intentar actualizar el hospital, ponte  chingon'
+        });
+
+    }
+
 
 };
 

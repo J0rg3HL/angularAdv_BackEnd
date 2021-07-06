@@ -66,26 +66,86 @@ const crearHospitales = async(req, resp = response) => {
 
 
 
-const updateHospitales = (req, resp = response) => {
+const updateHospitales = async(req, resp = response) => {
 
     // respuesta(resp, 200);
 
-    return resp.status(200).json({
-        ok: true,
-        msg: 'este  es un mensaje de prueba'
-    });
+    const id = req.params.id;
+    console.log('esto es loq  se uiere de  hospitales:' + id);
+
+    try {
+
+        const hospitaleUpdate = await Hospital.findById(id).populate('usuario');
+
+
+        if (!hospitaleUpdate) {
+
+            return resp.status(200).json({
+                ok: true,
+                msg: 'EL HOSPITAL NO EXISTE',
+                hospitaleUpdate: hospitaleUpdate
+            });
+        }
+
+        hospitaleUpdate.nombre = req.body.nombre;
+        hospitaleUpdate.save();
+
+        return resp.status(200).json({
+            ok: true,
+            msg: 'este  es un mensaje de prueba',
+            hospitaleUpdate: hospitaleUpdate
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        return resp.status(500).json({
+            ok: true,
+            msg: 'NOSE  PUDIEORN CONSULTAR LOS HOSPITALES, REVISA  POR FAVOR'
+        });
+    }
 
 };
 
 
-const borrarHospitales = (req, resp = response) => {
+const borrarHospitales = async(req, resp = response) => {
 
-    // respuesta(resp, 200);
+    const id = req.params.id;
+    console.log('esto es lo q se Quiere  BORRAR de  hospitales:' + id);
 
-    return resp.status(200).json({
-        ok: true,
-        msg: 'este  es un mensaje de prueba'
-    });
+    try {
+
+        const hospitalDelete = await Hospital.findById(id);
+
+
+        if (!hospitalDelete) {
+
+            return resp.status(200).json({
+                ok: true,
+                msg: 'EL HOSPITAL NO EXISTE',
+                hospitalDelete: hospitalDelete
+            });
+        }
+
+
+        //hospitaleUpdate.findByIdAndDelete
+        hospitalDelete.delete();
+
+        return resp.status(200).json({
+            ok: true,
+            msg: 'este  es un mensaje de prueba',
+            hospitalDelete: hospitalDelete
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        return resp.status(500).json({
+            ok: true,
+            msg: 'NOSE  PUDIEORN BORRAR LOS HOSPITALES, REVISA  POR FAVOR'
+        });
+    }
+
 
 };
 
